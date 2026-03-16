@@ -660,6 +660,7 @@ func (r *ContentRepository) UpdateArticle(ctx context.Context, article *content.
 		"is_hot":                        article.IsHot,
 		"is_original":                   article.IsOriginal,
 		"ext_info":                      article.ExtInfo,
+		"created_at":                    article.CreatedAt,
 		"content_updated_at":            article.ContentUpdatedAt,
 		"updated_at":                    now,
 	}
@@ -1054,6 +1055,7 @@ func (r *ContentRepository) UpdateMoment(ctx context.Context, moment *content.Mo
 		"is_hot":                       moment.IsHot,
 		"is_original":                  moment.IsOriginal,
 		"ext_info":                     moment.ExtInfo,
+		"created_at":                   moment.CreatedAt,
 		"content_updated_at":           moment.ContentUpdatedAt,
 		"updated_at":                   now,
 	}

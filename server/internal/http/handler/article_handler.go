@@ -162,6 +162,7 @@ func (h *ArticleHandler) UpdateArticle(c *fiber.Ctx) error {
 	}
 	cmd.ID = id
 	cmd.ExtInfo = extInfo
+	cmd.CreatedAt = req.CreatedAt
 
 	updatedArticle, err := h.svc.UpdateArticle(c.Context(), cmd)
 	if err != nil {

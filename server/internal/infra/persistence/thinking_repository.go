@@ -118,7 +118,8 @@ func (r *ThinkingRepository) Create(ctx context.Context, t *thinking.Thinking) e
 
 func (r *ThinkingRepository) Update(ctx context.Context, t *thinking.Thinking) error {
 	updates := map[string]interface{}{
-		"content": t.Content,
+		"content":    t.Content,
+		"created_at": t.CreatedAt,
 	}
 	if t.ActivityPubObjectID != nil {
 		updates["activitypub_object_id"] = t.ActivityPubObjectID
