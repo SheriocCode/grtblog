@@ -325,7 +325,8 @@ const parseInspiration = (value: unknown): HomeInspirationThemeConfig | undefine
 	const energy = isRecord(value.energy)
 		? {
 				label: toStringValue(value.energy.label),
-				icon: parseInspirationIcon(value.energy.icon)
+				icon: parseInspirationIcon(value.energy.icon),
+				show: typeof value.energy.show === 'boolean' ? value.energy.show : true
 			}
 		: undefined;
 	const techStack = isRecord(value.techStack)
@@ -336,12 +337,14 @@ const parseInspiration = (value: unknown): HomeInspirationThemeConfig | undefine
 					? value.techStack.icons
 							.map((item) => parseInspirationIcon(item))
 							.filter((item): item is HomeInspirationIconName => Boolean(item))
-					: undefined
+					: undefined,
+				show: typeof value.techStack.show === 'boolean' ? value.techStack.show : true
 			}
 		: undefined;
 	const github = isRecord(value.github)
 		? {
-				username: toStringValue(value.github.username)
+				username: toStringValue(value.github.username),
+				show: typeof value.github.show === 'boolean' ? value.github.show : true
 			}
 		: undefined;
 

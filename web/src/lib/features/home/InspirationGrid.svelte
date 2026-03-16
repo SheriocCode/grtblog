@@ -216,6 +216,7 @@
 			</div>
 		</div>
 
+	{#if config?.energy?.show !== false}
 		<div
 			class="col-span-1 md:col-span-1 lg:col-span-1 row-span-1 bento-card flex items-center justify-center group"
 		>
@@ -228,27 +229,29 @@
 				<div class="text-xs font-mono">{energyLabel}</div>
 			</div>
 		</div>
+	{/if}
 
-		{#each statItems as stat (stat.id)}
-			<div
-				class="col-span-1 md:col-span-1 lg:col-span-1 row-span-1 bento-card p-4 flex flex-col justify-between hover:border-jade-200 dark:hover:border-jade-900/50 transition-colors"
-			>
-				<svelte:component this={resolveIcon(stat.icon, Library)} size={18} class="text-ink-400" />
-				<div>
-					<div
-						class="text-2xl font-serif {isStatMissing(stat, wordStats, githubStats)
-							? 'text-cinnabar-500 dark:text-cinnabar-400'
-							: stat.colorClass || 'text-jade-500'}"
-					>
-						{resolveDynamicStatValue(stat, wordStats, githubStats)}
-					</div>
-					<div class="text-[10px] font-mono uppercase tracking-tighter text-ink-400">
-						{stat.label}
-					</div>
+	{#each statItems as stat (stat.id)}
+		<div
+			class="col-span-1 md:col-span-1 lg:col-span-1 row-span-1 bento-card p-4 flex flex-col justify-between hover:border-jade-200 dark:hover:border-jade-900/50 transition-colors"
+		>
+			<svelte:component this={resolveIcon(stat.icon, Library)} size={18} class="text-ink-400" />
+			<div>
+				<div
+					class="text-2xl font-serif {isStatMissing(stat, wordStats, githubStats)
+						? 'text-cinnabar-500 dark:text-cinnabar-400'
+						: stat.colorClass || 'text-jade-500'}"
+				>
+					{resolveDynamicStatValue(stat, wordStats, githubStats)}
+				</div>
+				<div class="text-[10px] font-mono uppercase tracking-tighter text-ink-400">
+					{stat.label}
 				</div>
 			</div>
-		{/each}
+		</div>
+	{/each}
 
+	{#if config?.techStack?.show !== false}
 		<div
 			class="col-span-1 md:col-span-2 lg:col-span-3 row-span-1 bento-card px-6 flex items-center justify-between overflow-hidden relative"
 		>
@@ -272,7 +275,8 @@
 				{/each}
 			</div>
 		</div>
-	</StaggerList>
+	{/if}
+</StaggerList>
 </section>
 
 <style lang="postcss">
