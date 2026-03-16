@@ -68,6 +68,9 @@ func (s *Service) Update(ctx context.Context, cmd UpdateThinkingCmd) (*domainthi
 		return nil, err
 	}
 	t.Content = cmd.Content
+	if cmd.CreatedAt != nil {
+		t.CreatedAt = *cmd.CreatedAt
+	}
 	if err := s.repo.Update(ctx, t); err != nil {
 		return nil, err
 	}

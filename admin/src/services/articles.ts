@@ -106,6 +106,7 @@ export interface UpdateArticlePayload {
   isOriginal: boolean
   allowComment: boolean
   extInfo?: ContentExtInfo | null
+  createdAt?: string | null
 }
 
 export interface ResetArticleFederationSignalsPayload {

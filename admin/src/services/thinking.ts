@@ -39,6 +39,7 @@ export interface CreateThinkingPayload {
 export interface UpdateThinkingPayload {
   content: string
   allowComment?: boolean
+  createdAt?: string | null
 }
 
 function stripEmpty<T extends object>(value: T): Record<string, unknown> {

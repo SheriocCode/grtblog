@@ -161,6 +161,9 @@ func (s *Service) UpdateMoment(ctx context.Context, cmd UpdateMomentCmd) (*conte
 	existing.IsTop = cmd.IsTop
 	existing.IsOriginal = cmd.IsOriginal
 	existing.ExtInfo = cmd.ExtInfo
+	if cmd.CreatedAt != nil {
+		existing.CreatedAt = *cmd.CreatedAt
+	}
 
 	if err := s.repo.UpdateMoment(ctx, existing); err != nil {
 		return nil, err

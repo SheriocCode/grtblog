@@ -101,6 +101,7 @@ export interface UpdateMomentPayload {
   isOriginal: boolean
   allowComment: boolean
   extInfo?: ContentExtInfo | null
+  createdAt?: string | null
 }
 
 function stripEmpty<T extends object>(value: T): Record<string, unknown> {

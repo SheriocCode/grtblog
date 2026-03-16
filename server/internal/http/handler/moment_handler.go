@@ -158,6 +158,7 @@ func (h *MomentHandler) UpdateMoment(c *fiber.Ctx) error {
 		AllowComment: req.AllowComment,
 		IsOriginal:   req.IsOriginal,
 		ExtInfo:      extInfo,
+		CreatedAt:    req.CreatedAt,
 	}
 	cmd.ID = id
 

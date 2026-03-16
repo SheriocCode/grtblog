@@ -76,6 +76,7 @@ async function handleSave() {
       await updateThinking(Number(id.value), {
         content: formValue.value.content,
         allowComment: formValue.value.allowComment,
+        createdAt: formValue.value.createdAt ? new Date(formValue.value.createdAt).toISOString() : null,
       })
       message.success('更新成功')
     }
@@ -147,7 +148,7 @@ async function handleRepublishActivityPub() {
             </div>
           </div>
         </NFormItem>
-        <NFormItem v-if="isCreating" label="发布时间">
+        <NFormItem label="发布时间">
           <NDatePicker
             v-model:value="formValue.createdAt"
             type="datetime"

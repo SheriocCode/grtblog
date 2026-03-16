@@ -99,6 +99,7 @@ type UpdateArticleReq struct {
 	AllowComment *bool    `json:"allowComment,omitempty"`
 	IsOriginal   bool     `json:"isOriginal"`
 	ExtInfo      *JSONRaw `json:"extInfo,omitempty" swaggertype:"object"`
+	CreatedAt    *time.Time `json:"createdAt,omitempty"`
 }
 
 // ListArticlesReq 文章列表查询请求。

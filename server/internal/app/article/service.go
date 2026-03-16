@@ -175,6 +175,9 @@ func (s *Service) UpdateArticle(ctx context.Context, cmd UpdateArticleCmd) (*con
 	existing.IsTop = cmd.IsTop
 	existing.IsOriginal = cmd.IsOriginal
 	existing.ExtInfo = mergeExtInfoKeepingFederation(existing.ExtInfo, cmd.ExtInfo)
+	if cmd.CreatedAt != nil {
+		existing.CreatedAt = *cmd.CreatedAt
+	}
 
 	if err := s.repo.UpdateArticle(ctx, existing); err != nil {
 		return nil, err

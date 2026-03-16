@@ -48,6 +48,7 @@ export function useMomentForm() {
     isTop: false,
     isOriginal: true,
     allowComment: true,
+    createdAt: Date.now() as number | null,
   })
 
   const baseExtInfo = ref<ContentExtInfo | null>(null)
@@ -84,6 +85,7 @@ export function useMomentForm() {
       form.isTop = data.isTop
       form.isOriginal = data.isOriginal
       form.allowComment = data.allowComment
+      form.createdAt = data.createdAt ? new Date(data.createdAt).getTime() : null
       baseExtInfo.value = data.extInfo ?? null
 
       initialSnapshot.value = takeSnapshot()
@@ -118,6 +120,7 @@ export function useMomentForm() {
         isTop: form.isTop,
         isOriginal: form.isOriginal,
         allowComment: form.allowComment,
+        createdAt: form.createdAt ? new Date(form.createdAt).toISOString() : undefined,
         extInfo: extInfo.value ?? undefined,
       }
 

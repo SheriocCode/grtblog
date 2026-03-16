@@ -46,6 +46,7 @@ func (r *CreateThinkingReq) UnmarshalJSON(data []byte) error {
 type UpdateThinkingReq struct {
 	Content      string `json:"content" validate:"required"`
 	AllowComment *bool  `json:"allowComment,omitempty"`
+	CreatedAt    *time.Time `json:"createdAt,omitempty"`
 }
 
 // BatchDeleteThinkingReq 批量删除思考请求。

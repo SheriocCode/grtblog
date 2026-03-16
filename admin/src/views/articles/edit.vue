@@ -10,6 +10,7 @@ import {
   NDrawer,
   NDrawerContent,
   NDynamicTags,
+  NDatePicker,
   NEmpty,
   NForm,
   NFormItem,
@@ -1111,6 +1112,20 @@ watch([isYearSummary, yearSummaryYear], () => {
                     placeholder="输入年份，例如 2024"
                   />
                 </div>
+              </div>
+              <div class="col-span-2 rounded-lg px-4 py-3">
+                <NFormItem
+                  label="发布时间"
+                  :show-feedback="false"
+                >
+                  <NDatePicker
+                    v-model:value="form.createdAt"
+                    type="datetime"
+                    clearable
+                    style="width: 100%"
+                    placeholder="默认当前时间"
+                  />
+                </NFormItem>
               </div>
               <div class="col-span-2 rounded-lg px-4 py-3">
                 <div class="flex items-start justify-between gap-4">

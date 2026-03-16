@@ -15,10 +15,10 @@
 
 <div class="w-full max-w-5xl mx-auto px-6 md:px-0 py-16">
 	<PageHeader
-		title="手记"
+		title="病隙碎笔"
 		tag="Moments"
-		subtitle="碎碎念，亦是生活的注脚"
-		description="捕捉转瞬即逝的灵感与生活碎片。在这里，文字与心情一同流淌。"
+		subtitle="于身体困顿时，向内探求"
+		description="拾掇病中散落的时光碎片。在脆弱的间隙里，拼凑存在的重量。"
 	/>
 
 	{#if $moments.length > 0}

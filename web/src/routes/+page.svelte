@@ -27,7 +27,7 @@
 						<div class="flex items-center gap-3">
 							<span class="h-px w-8 bg-jade-500/40"></span>
 							<h2 class="text-xl font-serif font-medium text-ink-900 dark:text-ink-100">
-								最近文章
+								Coding 笔记
 							</h2>
 						</div>
 						<a
@@ -56,7 +56,7 @@
 						<div class="flex items-center gap-3">
 							<span class="h-px w-8 bg-jade-500/40"></span>
 							<h2 class="text-xl font-serif font-medium text-ink-900 dark:text-ink-100">
-								最近手记
+								病隙碎笔
 							</h2>
 						</div>
 						<a

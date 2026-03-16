@@ -103,6 +103,7 @@ func (h *ThinkingHandler) UpdateThinking(c *fiber.Ctx) error {
 		ID:           id,
 		Content:      req.Content,
 		AllowComment: req.AllowComment,
+		CreatedAt:    req.CreatedAt,
 	})
 	if err != nil {
 		return h.mapError(c, err)

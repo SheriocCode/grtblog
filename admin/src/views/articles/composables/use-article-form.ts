@@ -40,6 +40,7 @@ export function useArticleForm() {
     isTop: false,
     isOriginal: true,
     allowComment: true,
+    createdAt: Date.now() as number | null,
   })
 
   const baseExtInfo = ref<ContentExtInfo | null>(null)
@@ -80,6 +81,7 @@ export function useArticleForm() {
       form.isTop = data.isTop
       form.isOriginal = data.isOriginal
       form.allowComment = data.allowComment
+      form.createdAt = data.createdAt ? new Date(data.createdAt).getTime() : null
       baseExtInfo.value = data.extInfo ?? null
 
       initialSnapshot.value = takeSnapshot()
@@ -109,6 +111,7 @@ export function useArticleForm() {
         leadIn: form.leadIn || null,
         cover: form.cover || null,
         shortUrl: form.shortUrl,
+        createdAt: form.createdAt ? new Date(form.createdAt).toISOString() : undefined,
         extInfo: extInfo.value ?? undefined,
       }
 

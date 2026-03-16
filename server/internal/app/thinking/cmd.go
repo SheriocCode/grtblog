@@ -13,6 +13,7 @@ type UpdateThinkingCmd struct {
 	ID           int64
 	Content      string
 	AllowComment *bool
+	CreatedAt    *time.Time
 }
 
 // BatchDeleteCmd 批量删除思考命令。

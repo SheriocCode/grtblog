@@ -37,6 +37,7 @@ type UpdateMomentCmd struct {
 	AllowComment *bool
 	IsOriginal   bool
 	ExtInfo      []byte
+	CreatedAt    *time.Time // 可选：支持修改发布时间
 }
 
 // BatchSetPublishedCmd 批量设置手记发布状态命令。

@@ -10,10 +10,10 @@
 
 <div class="max-w-5xl mx-auto py-10">
 	<PageHeader
-		title="文章归档"
+		title="Coding 笔记"
 		tag="Archive"
-		subtitle="文字是思考的锚点"
-		description="按时间顺序排布的思考、笔记与技术沉淀。在这里，你可以找到所有历史文章的快照。"
+		subtitle="指尖敲下的星辰"
+		description="以时间为轴，收纳每一次逻辑的编织、思路的沉淀，留存成长的轨迹。"
 	/>
 	<PostList />
 </div>

@@ -9,6 +9,7 @@ import {
   NDrawer,
   NDrawerContent,
   NDynamicTags,
+  NDatePicker,
   NForm,
   NFormItem,
   NInput,
@@ -736,6 +737,20 @@ watch(previewUrl, () => {
                   v-model:value="form.isOriginal"
                   size="small"
                 />
+              </div>
+              <div class="col-span-2 rounded-lg px-4 py-3">
+                <NFormItem
+                  label="发布时间"
+                  :show-feedback="false"
+                >
+                  <NDatePicker
+                    v-model:value="form.createdAt"
+                    type="datetime"
+                    clearable
+                    style="width: 100%"
+                    placeholder="默认当前时间"
+                  />
+                </NFormItem>
               </div>
               <div class="col-span-2 rounded-lg px-4 py-3">
                 <div class="flex items-start justify-between gap-4">

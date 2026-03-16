@@ -44,10 +44,10 @@
 
 <div class="pt-16 pb-20 max-w-4xl mx-auto">
 	<PageHeader 
-		title="思考" 
+		title="夕拾" 
 		tag="Thoughts" 
 		subtitle="在喧嚣中寻觅一丝宁静" 
-		description="记录深思熟虑后的感悟，或是对世界的细微观察。"
+		description="当一行文字让你停顿，就是值得记录的时刻"
 	/>
 
 	<div class="min-h-[500px] px-4 sm:px-0">
@@ -64,7 +64,7 @@
 				<div class="w-12 h-12 mb-4 border-2 border-dashed border-ink-200 dark:border-ink-800 rounded-full flex items-center justify-center opacity-50">
 					<div class="w-2 h-2 rounded-full bg-ink-200 dark:bg-ink-800"></div>
 				</div>
-				<p>暂无手记...</p>
+				<p>暂无...</p>
 			</div>
 		{/if}
 	</div>

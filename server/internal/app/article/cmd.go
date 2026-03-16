@@ -39,6 +39,7 @@ type UpdateArticleCmd struct {
 	AllowComment *bool
 	IsOriginal   bool
 	ExtInfo      []byte
+	CreatedAt    *time.Time // 可选：支持修改发布时间
 }
 
 // ResetFederationSignalsCmd 重置文章联合条目状态命令。
