@@ -9,6 +9,7 @@ import (
 	"github.com/grtsinry43/grtblog-v2/server/internal/app/article"
 	appEvent "github.com/grtsinry43/grtblog-v2/server/internal/app/event"
 	"github.com/grtsinry43/grtblog-v2/server/internal/app/federation"
+	"github.com/grtsinry43/grtblog-v2/server/internal/app/gallery"
 	"github.com/grtsinry43/grtblog-v2/server/internal/app/moment"
 	"github.com/grtsinry43/grtblog-v2/server/internal/app/page"
 	"github.com/redis/go-redis/v9"
@@ -103,6 +104,38 @@ func RegisterMomentSubscribers(bus appEvent.Bus, service *Service) {
 	register(moment.MomentPublished{}.Name())
 	register(moment.MomentUnpublished{}.Name())
 	register(moment.MomentDeleted{}.Name())
+}
+
+func RegisterGallerySubscribers(bus appEvent.Bus, service *Service) {
+	if bus == nil || service == nil {
+		return
+	}
+
+	register := func(eventName string) {
+		bus.Subscribe(eventName, handlerFunc(func(ctx context.Context, event appEvent.Event) error {
+			galleryID := extractGalleryEventPayload(event)
+			if galleryID <= 0 {
+				return nil
+			}
+
+			deps := []string{
+				"gallery:list:page:1",
+				"gallery:list:page:2",
+				"gallery:list:page:3",
+				"gallery:recent",
+			}
+			urls := []string{
+				"/gallery",
+			}
+			return service.Invalidate(ctx, deps, urls)
+		}))
+	}
+
+	register(gallery.GalleryCreated{}.Name())
+	register(gallery.GalleryUpdated{}.Name())
+	register(gallery.GalleryPublished{}.Name())
+	register(gallery.GalleryUnpublished{}.Name())
+	register(gallery.GalleryDeleted{}.Name())
 }
 
 func RegisterPageSubscribers(bus appEvent.Bus, service *Service) {
@@ -252,6 +285,23 @@ func extractMomentEventPayload(event appEvent.Event) (momentID int64, shortURL s
 	}
 }
 
+func extractGalleryEventPayload(event appEvent.Event) int64 {
+	switch e := event.(type) {
+	case gallery.GalleryCreated:
+		return e.ID
+	case gallery.GalleryUpdated:
+		return e.ID
+	case gallery.GalleryPublished:
+		return e.ID
+	case gallery.GalleryUnpublished:
+		return e.ID
+	case gallery.GalleryDeleted:
+		return e.ID
+	default:
+		return 0
+	}
+}
+
 func extractPageEventPayload(event appEvent.Event) (pageID int64, shortURL string) {
 	switch e := event.(type) {
 	case page.PageCreated:
@@ -308,4 +358,11 @@ func RegisterTagContentCacheSubscribers(bus appEvent.Bus, redisClient *redis.Cli
 	bus.Subscribe(moment.MomentPublished{}.Name(), invalidate)
 	bus.Subscribe(moment.MomentUnpublished{}.Name(), invalidate)
 	bus.Subscribe(moment.MomentDeleted{}.Name(), invalidate)
+
+	// Gallery events
+	bus.Subscribe(gallery.GalleryCreated{}.Name(), invalidate)
+	bus.Subscribe(gallery.GalleryUpdated{}.Name(), invalidate)
+	bus.Subscribe(gallery.GalleryPublished{}.Name(), invalidate)
+	bus.Subscribe(gallery.GalleryUnpublished{}.Name(), invalidate)
+	bus.Subscribe(gallery.GalleryDeleted{}.Name(), invalidate)
 }

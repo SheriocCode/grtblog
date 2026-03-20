@@ -42,6 +42,19 @@ type MomentListOptionsInternal struct {
 	Search    *string `json:"search,omitempty"`
 }
 
+// GalleryListOptions 公开的日常列表查询选项
+type GalleryListOptions struct {
+	Page     int `json:"page" validate:"min=1"`
+	PageSize int `json:"pageSize" validate:"min=1,max=100"`
+}
+
+// GalleryListOptionsInternal 内部的日常列表查询选项（包含管理功能）
+type GalleryListOptionsInternal struct {
+	Page      int   `json:"page" validate:"min=1"`
+	PageSize  int   `json:"pageSize" validate:"min=1,max=100"`
+	Published *bool `json:"published,omitempty"`
+}
+
 // PageListOptions 公开的页面列表查询选项
 type PageListOptions struct {
 	Page     int     `json:"page" validate:"min=1"`

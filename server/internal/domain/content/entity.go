@@ -122,6 +122,20 @@ type Moment struct {
 	DeletedAt                  *time.Time
 }
 
+type Gallery struct {
+	ID           int64
+	Content      string
+	ContentHash  string
+	AuthorID     int64
+	Images       []string
+	IsPublished  bool
+	IsTop        bool
+	ExtInfo      []byte
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    *time.Time
+}
+
 type MomentMetrics struct {
 	MomentID  int64
 	Views     int64

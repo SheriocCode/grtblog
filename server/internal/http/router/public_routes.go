@@ -35,6 +35,9 @@ func registerPublicRoutes(v2 fiber.Router, deps Dependencies, websiteInfoHandler
 	momentHandler := newMomentHandler(deps)
 	public.Get("/moments/recent", momentHandler.ListRecentPublicMoments)
 
+	galleryHandler := newGalleryHandler(deps)
+	public.Get("/galleries/recent", galleryHandler.ListRecentPublicGalleries)
+
 	homeSvc := home.NewService(deps.DB, deps.Redis, deps.Config.Redis.Prefix)
 	homeHandler := handler.NewHomeHandler(homeSvc)
 	public.Get("/home/activity-pulse", homeHandler.GetActivityPulse)

@@ -75,6 +75,14 @@ type Repository interface {
 	ListPublicMoments(ctx context.Context, options MomentListOptions) ([]*Moment, int64, error)
 	ListPublishedMomentsByCreatedAtRange(ctx context.Context, start time.Time, end time.Time, limit int) ([]*Moment, error)
 
+	// Gallery 相关操作
+	CreateGallery(ctx context.Context, gallery *Gallery) error
+	GetGalleryByID(ctx context.Context, id int64) (*Gallery, error)
+	UpdateGallery(ctx context.Context, gallery *Gallery) error
+	DeleteGallery(ctx context.Context, id int64) error
+	ListGalleries(ctx context.Context, options GalleryListOptionsInternal) ([]*Gallery, int64, error)
+	ListPublicGalleries(ctx context.Context, options GalleryListOptions) ([]*Gallery, int64, error)
+
 	// Page 相关操作
 	CreatePage(ctx context.Context, page *Page) error
 	GetPageByID(ctx context.Context, id int64) (*Page, error)

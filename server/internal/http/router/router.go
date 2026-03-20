@@ -150,6 +150,7 @@ func Register(app *fiber.App, deps Dependencies) {
 	}
 	deps.ISR = isrSvc
 	isr.RegisterArticleSubscribers(eventBus, isrSvc)
+	isr.RegisterGallerySubscribers(eventBus, isrSvc)
 	isr.RegisterMomentSubscribers(eventBus, isrSvc)
 	isr.RegisterPageSubscribers(eventBus, isrSvc)
 	isr.RegisterThinkingSubscribers(eventBus, isrSvc)
@@ -212,6 +213,7 @@ func Register(app *fiber.App, deps Dependencies) {
 	deps.EventBus = eventBus
 	registerWSRoutes(v2, wsManager, deps)
 	registerArticlePublicRoutes(v2, deps)
+	registerGalleryPublicRoutes(v2, deps)
 	registerMomentPublicRoutes(v2, deps)
 	registerThinkingPublicRoutes(v2, deps)
 	registerPagePublicRoutes(v2, deps)
@@ -219,6 +221,7 @@ func Register(app *fiber.App, deps Dependencies) {
 	registerCommentPublicRoutes(v2, deps)
 	registerUserRoutes(v2, deps, websiteInfoHandler)
 	registerArticleAuthRoutes(v2, deps)
+	registerGalleryAuthRoutes(v2, deps)
 	registerMomentAuthRoutes(v2, deps)
 	registerThinkingAuthRoutes(v2, deps)
 	registerPageAuthRoutes(v2, deps)

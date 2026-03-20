@@ -129,6 +129,57 @@ export const routeRecordRaw: MenuMixedOptions[] = [
     ],
   },
   {
+    path: 'galleries',
+    name: 'galleryManagement',
+    icon: 'iconify ph--images-square',
+    label: '日常管理',
+    redirect: 'galleries/list',
+    children: [
+      {
+        path: 'list',
+        name: 'galleryList',
+        label: '日常列表',
+        icon: 'iconify ph--rows',
+        meta: {
+          componentName: 'GalleryList',
+          showTab: true,
+        },
+        component: 'galleries/index',
+      },
+      {
+        path: 'edit/new',
+        name: 'galleryCreate',
+        label: '新建日常',
+        icon: 'iconify ph--pencil-simple-line',
+        meta: {
+          componentName: 'GalleryEdit',
+          showTab: true,
+          enableMultiTab: true,
+          renderTabTitle() {
+            return '新建日常'
+          },
+        },
+        component: 'galleries/edit',
+      },
+      {
+        path: 'edit/:id',
+        name: 'galleryEdit',
+        label: '编辑日常',
+        icon: 'iconify ph--pencil-simple-line',
+        show: false,
+        meta: {
+          componentName: 'GalleryEdit',
+          showTab: true,
+          enableMultiTab: true,
+          renderTabTitle({ id }) {
+            return `编辑日常${id ? `-${id}` : ''}`
+          },
+        },
+        component: 'galleries/edit',
+      },
+    ],
+  },
+  {
     path: 'thinkings',
     name: 'thinkingManagement',
     icon: 'iconify ph--lightbulb-filament',

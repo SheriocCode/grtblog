@@ -13,6 +13,13 @@ func MomentContentHash(title string, summary string, content string) string {
 	return hashContentParts(title, summary, content)
 }
 
+func GalleryContentHash(content string, images []string) string {
+	parts := make([]string, 0, len(images)+1)
+	parts = append(parts, content)
+	parts = append(parts, images...)
+	return hashContentParts(parts...)
+}
+
 func PageContentHash(title string, description *string, content string) string {
 	return hashContentParts(title, stringOrEmpty(description), content)
 }

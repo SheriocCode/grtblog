@@ -1189,6 +1189,125 @@ func (r *ContentRepository) ListPublicMoments(ctx context.Context, options conte
 	return moments, total, nil
 }
 
+func (r *ContentRepository) CreateGallery(ctx context.Context, gallery *content.Gallery) error {
+	imagesBytes, err := stringsToJSONBytes(gallery.Images)
+	if err != nil {
+		return err
+	}
+
+	galleryModel := &model.Gallery{
+		Content:     gallery.Content,
+		ContentHash: gallery.ContentHash,
+		AuthorID:    gallery.AuthorID,
+		Images:      imagesBytes,
+		IsPublished: gallery.IsPublished,
+		IsTop:       gallery.IsTop,
+		ExtInfo:     gallery.ExtInfo,
+		CreatedAt:   gallery.CreatedAt,
+	}
+
+	if err := r.db.WithContext(ctx).Create(galleryModel).Error; err != nil {
+		return err
+	}
+
+	gallery.ID = galleryModel.ID
+	gallery.UpdatedAt = galleryModel.UpdatedAt
+	return nil
+}
+
+func (r *ContentRepository) GetGalleryByID(ctx context.Context, id int64) (*content.Gallery, error) {
+	var galleryModel model.Gallery
+	result := r.db.WithContext(ctx).Where("id = ?", id).Limit(1).Find(&galleryModel)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, content.ErrGalleryNotFound
+	}
+
+	return r.modelToGallery(&galleryModel), nil
+}
+
+func (r *ContentRepository) UpdateGallery(ctx context.Context, gallery *content.Gallery) error {
+	imagesBytes, err := stringsToJSONBytes(gallery.Images)
+	if err != nil {
+		return err
+	}
+
+	now := time.Now()
+	updates := map[string]any{
+		"content":      gallery.Content,
+		"content_hash": gallery.ContentHash,
+		"images":       imagesBytes,
+		"is_published": gallery.IsPublished,
+		"is_top":       gallery.IsTop,
+		"ext_info":     gallery.ExtInfo,
+		"created_at":   gallery.CreatedAt,
+		"updated_at":   now,
+	}
+	if err := r.db.WithContext(ctx).
+		Model(&model.Gallery{}).
+		Where("id = ?", gallery.ID).
+		Updates(updates).Error; err != nil {
+		return err
+	}
+
+	gallery.UpdatedAt = now
+	return nil
+}
+
+func (r *ContentRepository) DeleteGallery(ctx context.Context, id int64) error {
+	return r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.Gallery{}).Error
+}
+
+func (r *ContentRepository) ListGalleries(ctx context.Context, options content.GalleryListOptionsInternal) ([]*content.Gallery, int64, error) {
+	query := r.db.WithContext(ctx).Model(&model.Gallery{})
+
+	if options.Published != nil {
+		query = query.Where("is_published = ?", *options.Published)
+	}
+
+	var total int64
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	offset := (options.Page - 1) * options.PageSize
+	var galleryModels []*model.Gallery
+	if err := query.Order("is_top DESC, created_at DESC").Offset(offset).Limit(options.PageSize).Find(&galleryModels).Error; err != nil {
+		return nil, 0, err
+	}
+
+	galleries := make([]*content.Gallery, len(galleryModels))
+	for i, gm := range galleryModels {
+		galleries[i] = r.modelToGallery(gm)
+	}
+
+	return galleries, total, nil
+}
+
+func (r *ContentRepository) ListPublicGalleries(ctx context.Context, options content.GalleryListOptions) ([]*content.Gallery, int64, error) {
+	query := r.db.WithContext(ctx).Model(&model.Gallery{}).Where("is_published = ?", true)
+
+	var total int64
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	offset := (options.Page - 1) * options.PageSize
+	var galleryModels []*model.Gallery
+	if err := query.Order("is_top DESC, created_at DESC").Offset(offset).Limit(options.PageSize).Find(&galleryModels).Error; err != nil {
+		return nil, 0, err
+	}
+
+	galleries := make([]*content.Gallery, len(galleryModels))
+	for i, gm := range galleryModels {
+		galleries[i] = r.modelToGallery(gm)
+	}
+
+	return galleries, total, nil
+}
+
 func (r *ContentRepository) ListPublishedMomentsByCreatedAtRange(ctx context.Context, start time.Time, end time.Time, limit int) ([]*content.Moment, error) {
 	if limit <= 0 {
 		limit = 2
@@ -1506,6 +1625,27 @@ func (r *ContentRepository) modelToMoment(mm *model.Moment) *content.Moment {
 	}
 }
 
+func (r *ContentRepository) modelToGallery(gm *model.Gallery) *content.Gallery {
+	images, err := jsonBytesToStrings(gm.Images)
+	if err != nil {
+		images = []string{}
+	}
+
+	return &content.Gallery{
+		ID:          gm.ID,
+		Content:     gm.Content,
+		ContentHash: gm.ContentHash,
+		AuthorID:    gm.AuthorID,
+		Images:      images,
+		IsPublished: gm.IsPublished,
+		IsTop:       gm.IsTop,
+		ExtInfo:     gm.ExtInfo,
+		CreatedAt:   gm.CreatedAt,
+		UpdatedAt:   gm.UpdatedAt,
+		DeletedAt:   timeToTimePtr(gm.DeletedAt.Time),
+	}
+}
+
 // modelToPage 将数据库模型转换为领域对象
 func (r *ContentRepository) modelToPage(pm *model.Page) *content.Page {
 	toc, err := bytesToToc(pm.TOC)
@@ -1562,6 +1702,25 @@ func bytesToToc(data []byte) ([]content.TOCNode, error) {
 	} else {
 		return nil, err
 	}
+}
+
+func stringsToJSONBytes(value []string) ([]byte, error) {
+	if value == nil {
+		return []byte("[]"), nil
+	}
+	return json.Marshal(value)
+}
+
+func jsonBytesToStrings(data []byte) ([]string, error) {
+	trimmed := bytes.TrimSpace(data)
+	if len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null")) {
+		return []string{}, nil
+	}
+	var items []string
+	if err := json.Unmarshal(trimmed, &items); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 func mapCategoryToDomain(rec model.ArticleCategory) *content.ArticleCategory {

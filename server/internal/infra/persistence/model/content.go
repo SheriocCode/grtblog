@@ -131,6 +131,22 @@ type MomentMetrics struct {
 
 func (MomentMetrics) TableName() string { return "moment_metrics" }
 
+type Gallery struct {
+	ID          int64          `gorm:"column:id;primaryKey"`
+	Content     string         `gorm:"column:content;type:text;not null"`
+	ContentHash string         `gorm:"column:content_hash;size:32;not null"`
+	AuthorID    int64          `gorm:"column:author_id;not null"`
+	Images      []byte         `gorm:"column:images;type:jsonb;not null"`
+	IsPublished bool           `gorm:"column:is_published"`
+	IsTop       bool           `gorm:"column:is_top"`
+	ExtInfo     []byte         `gorm:"column:ext_info;type:jsonb"`
+	CreatedAt   time.Time      `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at;autoUpdateTime"`
+	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;index"`
+}
+
+func (Gallery) TableName() string { return "gallery" }
+
 type Page struct {
 	ID          int64          `gorm:"column:id;primaryKey"`
 	Title       string         `gorm:"column:title;size:255;not null"`
